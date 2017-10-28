@@ -39,6 +39,10 @@ Extract Styles
 
 - `yarn add extract-text-webpack-plugin -D`
 
+Vue Router
+
+- `yarn add vue-router`
+
 ---
 
 ## Notes
@@ -262,6 +266,29 @@ Of course, we also need to add the generated stylesheet to the `index.html`:
 ```html
 <link rel="stylesheet" href="/assets/css/styles.css" />
 ```
+
+---
+
+### Routing
+
+Start by installing `vue-router` plugin into the project (see above).
+Then create the new `router.js` file and link the Category component
+to the root path:
+
+```js
+const router = new VueRouter({
+  routes: [
+    { path: '/', component: Category }
+  ]
+})
+```
+
+After that we can delete Category from `Layout.vue` and replace `<category></category>`
+with `<router-view></router-view>`. This will be a placeholder to load routed components
+in between the header and the footer.
+
+E.g. when the root page is loaded, the router finds the component linked to it, `category`,
+and load it in the `router-view` section.
 
 ---
 

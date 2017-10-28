@@ -7,7 +7,7 @@
         "modules": false
       }
     ],
-    // include stage-2 feature for spreads
+    // necessary for spreads
     "stage-2"
   ],
   "ignore": [

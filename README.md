@@ -290,6 +290,21 @@ in between the header and the footer.
 E.g. when the root page is loaded, the router finds the component linked to it, `category`,
 and load it in the `router-view` section.
 
+### History mode
+
+If we add `mode: 'history'` to the VueRouter, the hash in the url will disappear,
+and we will be able to walk back and forth through the browser history.
+
+```js
+const router = new VueRouter({
+  mode: 'history',
+  routes: [
+    { path: '/login', component: Login },
+    { path: '/', component: Category }
+  ]
+})
+```
+
 ---
 
 ## References

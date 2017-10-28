@@ -1,7 +1,7 @@
 // jshint esversion:6,-W033
 const path = require('path')
 
-const config ={
+const config = {
   entry: {
     app: path.resolve(__dirname, '../src/client-entry.js')
   },
@@ -9,16 +9,21 @@ const config ={
     rules: [
       {
         enforce: 'pre',
-        test: /(\.js$)|(\.vue$)/,
+        test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         exclude: /node_modules/
       },
       {
-        test: /(\.vue$)/,
-        loader: 'vue-loader'
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          css: 'css-loader',
+          'scss': 'css-loader|sass-loader',
+          sourceMap: true
+        }
       },
       {
-        test: /(\.js$)/,
+        test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/
       }

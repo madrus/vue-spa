@@ -30,6 +30,11 @@ Babel
 
 - `yarn add babel-core babel-eslint babel-loader babel-preset-es2015 babel-preset-stage-2 -D`
 
+Bulma Styling
+
+- `yarn add bulma`
+- `yarn add css-loader node-sass sass-loader -D`
+
 ---
 
 ## Notes
@@ -160,13 +165,43 @@ const app = new Vue({
 But in order to be able to render spreads, we need __Babel__ as not all browsers/version
 understand ES6 syntax.
 
-
 ### Babel
 
 - add Babel plugins (see above)
 - configure `.babelrc`
 - add babel to eslint parsing
 - add a rule to `build/webpack.base.config.js` to load `babel-loader`
+
+### Styling with Bulma
+
+[Bulma](https://bulma.io/) is a light-weight CSS-framework like Bootstrap. (see also [BulmaSwatch](https://jenil.github.io/bulmaswatch/))
+
+- all css and sass loaders (see above)
+- add loader options to `vue-loader` in `build/webpack.base.config.js`
+
+```js
+{
+  test: /(\.vue$)/,
+  loader: 'vue-loader',
+  options: {
+    css: 'css-loader',
+    'scss': 'css-loader|sass-loader'
+  }
+},
+```
+
+Now, in our .vue files we can use `scss`:
+
+```scss
+<style lang="scss">
+$primary: #287ab1;
+@import '~bulma';
+
+.columns {
+  flex-wrap: wrap;
+}
+</style>
+```
 
 ---
 

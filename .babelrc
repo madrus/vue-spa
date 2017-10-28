@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+      // use ES6 rules without modules
+      "es2015",
+      {
+        "modules": false
+      }
+    ],
+    // include stage-2 feature for spreads
+    "stage-2"
+  ],
+  "ignore": [
+    "node_modules/*"
+  ]
+}

@@ -26,6 +26,10 @@ Hot reload with `vue-loader`
 
 - `yarn add vue-loader vue-template-compiler -D`
 
+Babel
+
+- `yarn add babel-core babel-eslint babel-loader babel-preset-es2015 babel-preset-stage-2 -D`
+
 ---
 
 ## Notes
@@ -126,12 +130,14 @@ template: '<div id="app">{{ hello }}</div>'
 
 ---
 
-### Render function
+### Vue Render Function
 
 The render function inside the Vue initialisation
 
 ```js
-render: h => h('app')
+const app = new Vue({
+  render: h => h(AppLayout)
+})
 ```
 
 is similar to using this template:
@@ -139,6 +145,28 @@ is similar to using this template:
 ```js
 template: '<app></app>'
 ```
+
+### Vue Component Render Function
+
+If we `console.log()` our component, we will notice it has its own `render()` function.
+We can use the spread of the component instead of the Vue `render` function:
+
+```js
+const app = new Vue({
+  ...AppLayout
+})
+```
+
+But in order to be able to render spreads, we need __Babel__ as not all browsers/version
+understand ES6 syntax.
+
+
+### Babel
+
+- add Babel plugins (see above)
+- configure `.babelrc`
+- add babel to eslint parsing
+- add a rule to `build/webpack.base.config.js` to load `babel-loader`
 
 ---
 

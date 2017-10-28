@@ -4,7 +4,7 @@
 
 - install `editorconfig` plugin
 
-Initialise the project
+Project Initialisation
 
 - `npm init -y`
 - `yarn`
@@ -151,6 +151,8 @@ is similar to using this template:
 template: '<app></app>'
 ```
 
+---
+
 ### Vue Component Render Function
 
 If we `console.log()` our component, we will notice it has its own `render()` function.
@@ -165,12 +167,16 @@ const app = new Vue({
 But in order to be able to render spreads, we need __Babel__ as not all browsers/version
 understand ES6 syntax.
 
+---
+
 ### Babel
 
 - add Babel plugins (see above)
 - configure `.babelrc`
 - add babel to eslint parsing
 - add a rule to `build/webpack.base.config.js` to load `babel-loader`
+
+---
 
 ### Styling with Bulma
 
@@ -201,6 +207,19 @@ $primary: #287ab1;
   flex-wrap: wrap;
 }
 </style>
+```
+
+---
+
+### Vue Components
+
+> Creating a single file component and adding a `script` section with `default export`
+> in fact creates a __Vue instance__
+
+```js
+<script>
+export default {}
+</script>
 ```
 
 ---

@@ -35,6 +35,10 @@ Bulma Styling
 - `yarn add bulma`
 - `yarn add css-loader node-sass sass-loader -D`
 
+Extract Styles
+
+- `yarn add extract-text-webpack-plugin -D`
+
 ---
 
 ## Notes
@@ -220,6 +224,43 @@ $primary: #287ab1;
 <script>
 export default {}
 </script>
+```
+
+---
+
+### Slots
+
+__Slots__ are placeholder components that can be dynamically filled with real components.
+They can be anonymous or named. An example of how these slots can be used can be found
+in `Category.vue` and `Post.vue`.
+
+---
+
+### Extract Styles
+
+By default, out styles are included inside the generated JavaScript files.
+However, it is possible to combine all the style files in a separate file.
+Add `extract-text-webpack-plugin` (see above).
+
+In the `webpack.client.config.js` configure the plugin:
+
+```js
+// extracting CSS to a separate file is only necessary for the client
+config.module.rules
+  .filter(r => { return r.loader === 'vue-loader' })
+  .forEach(r => { r.options.extractCSS = true })
+
+config.plugins.push(
+  new ExtractTextPlugin('assets/css/styles.css')
+)
+```
+
+Here, we are adding a new property to the `vue-loader` rule but only for the client.
+
+Of course, we also need to add the generated stylesheet to the `index.html`:
+
+```html
+<link rel="stylesheet" href="/assets/css/styles.css" />
 ```
 
 ---

@@ -3,6 +3,11 @@
 ## Installation
 
 - install `editorconfig` plugin
+- make sure you have the latest version of `yarn` installed:
+
+  ```bash
+  curl -o- -L https://yarnpkg.com/install.sh | bash
+  ```
 
 Project Initialisation
 
@@ -42,6 +47,10 @@ Extract Styles
 Vue Router
 
 - `yarn add vue-router`
+
+Axios
+
+- `yarn add axios`
 
 ---
 
@@ -445,6 +454,15 @@ const NotFound = () => System.import('./theme/NotFound.vue')
 You can see in the webpack console log and in DevTools in the Network tab
 that the JavaScript file being loaded is now broken in three chunks:
 `0.js`, `1.js`, and `2.js`
+
+### Add Service Layer
+
+Using Axios we can read posts from an API.
+
+- add `app.service.js` and specify how to make async gets
+- use the new `getPosts` service method in the `loadPosts` method of `Categories.js` to read posts instead hardcoding them.
+- refactor the template to use the field names from the actual response
+- sanitize the serialized HTML with `v-html` directive
 
 ---
 

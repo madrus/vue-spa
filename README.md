@@ -389,6 +389,40 @@ created () {
 
 ---
 
+### Route Query
+
+We can extract the query parameters from our route.
+E.g. if our route ends with `?page=2`, we can get the value `2` like this:
+
+```js
+this.$route.query.page
+```
+
+---
+
+### Named Routes
+
+Added a name to a route makes it possible to use routes as variables.
+
+```js
+routes: [
+  ...
+  { path: '/category/:id', name: 'category', component: Category },
+  ...
+]
+```
+
+Now, we can use this name instead of hard-coded route. Compare:
+
+```html
+<router-link class="nav-item is-tab"
+  to="/category/front-end">Front-end</router-link>
+<router-link class="nav-item is-tab"
+  :to="{ name: 'category', params: { id: 'mobile' } }">Mobile</router-link>
+```
+
+---
+
 ## References
 
 - [EditorConfig website](http://editorconfig.org/)

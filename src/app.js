@@ -3,7 +3,7 @@ import Vue from 'vue'
 import AppLayout from './theme/Layout.vue'
 import router from './router'
 
-console.log(AppLayout)
+// console.log(AppLayout)
 
 const app = new Vue({
   router,

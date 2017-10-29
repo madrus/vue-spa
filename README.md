@@ -430,6 +430,8 @@ Now, we can use this name instead of hard-coded route. Compare:
   :to="{ name: 'category', params: { id: 'mobile' } }">Mobile</router-link>
 ```
 
+---
+
 ### Lazy Loading
 
 We can improve the performance of the website by loading components only
@@ -454,6 +456,8 @@ const NotFound = () => System.import('./theme/NotFound.vue')
 You can see in the webpack console log and in DevTools in the Network tab
 that the JavaScript file being loaded is now broken in three chunks:
 `0.js`, `1.js`, and `2.js`
+
+---
 
 ### Add Service Layer
 
@@ -487,6 +491,23 @@ login (credentials) {
 > Token expiration date is set inside the token itself but in this course, the expiration date is returned for simplicity to avoid token decryption.
 
 We can test our new login form using `bill/vuejs` as username and password.
+
+---
+
+### Intercepting Requests
+
+In order to consume a secure API, we need to send the `Authorization` header with every request.
+We can simplify this task by using interception mechanism in the `app.service.js`:
+
+```js
+axios.interceptors.request.use(config => {
+  const token = window.localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+```
 
 ---
 

@@ -305,6 +305,51 @@ const router = new VueRouter({
 })
 ```
 
+### Scrolling
+
+We would like to reload only the component that is linked to the route and not the whole page.
+To achieve this, we need to replace `<a>` tag with `<router-link>`
+
+In the `router.js`, specify what should happen when a new path is loaded.
+We can choose from three types of bahavior based on three parameters:
+
+- where we are going to
+- where we are coming from
+- last saved position of the screen
+
+The three types of bahavior are:
+
+- scroll to the fixed position e.g. top of the screen
+- scroll to the last saved position
+- scroll to the element with the id of the saved link hash value
+
+__Scroll to the top of the screen__
+
+```js
+scrollBehavior: (to, from, savedPosition) => ({ y: 0 }),
+```
+
+__Scroll to the last saved position__
+
+```js
+scrollBehavior: (to, from, savedPosition) => ({
+  if (savedPosition) {
+    return savedPosition
+  }
+}),
+```
+
+__Scroll to the element with the id of the saved link hash value__
+
+```js
+scrollBehavior: (to, from, savedPosition) => ({
+  if (to.hash) {
+    return {
+      selector: to.hash
+  }
+}),
+```
+
 ---
 
 ## References

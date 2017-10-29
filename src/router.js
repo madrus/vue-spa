@@ -23,7 +23,8 @@ const router = new VueRouter({
   scrollBehavior,
   routes: [
     { path: '/login', component: Login },
-    { path: '/', component: Category }
+    { path: '/category/front-end', component: Category },
+    { path: '/', redirect: '/category/front-end' }
   ]
 })
 

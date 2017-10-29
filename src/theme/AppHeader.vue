@@ -1,12 +1,12 @@
 <template>
   <nav class="nav has-shadow">
     <div class="container">
-      <router-link to="/" exact>
+      <router-link to="/category/front-end" exact>
         <img src="http://bstavroulakis.com/pluralsight/courses/vue-spa/logo.png"
           alt="Vue SPA" />
       </router-link>
       <router-link class="nav-item is-tab"
-        to="/" exact>Home</router-link>
+        to="/category/front-end" exact>Home</router-link>
       <router-link class="nav-item is-tab"
         to="/login">Login</router-link>
     </div>

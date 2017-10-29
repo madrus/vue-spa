@@ -421,6 +421,31 @@ Now, we can use this name instead of hard-coded route. Compare:
   :to="{ name: 'category', params: { id: 'mobile' } }">Mobile</router-link>
 ```
 
+### Lazy Loading
+
+We can improve the performance of the website by loading components only
+when they are needed.
+
+Compare:
+
+```js
+// loading everything all at once
+import Category from './theme/Category.vue'
+import Login from './theme/Login.vue'
+import NotFound from './theme/NotFound.vue'
+
+//vs
+
+// lazy loading
+const Category = () => System.import('./theme/Category.vue')
+const Login = () => System.import('./theme/Login.vue')
+const NotFound = () => System.import('./theme/NotFound.vue')
+```
+
+You can see in the webpack console log and in DevTools in the Network tab
+that the JavaScript file being loaded is now broken in three chunks:
+`0.js`, `1.js`, and `2.js`
+
 ---
 
 ## References

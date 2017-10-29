@@ -464,6 +464,26 @@ Using Axios we can read posts from an API.
 - refactor the template to use the field names from the actual response
 - sanitize the serialized HTML with `v-html` directive
 
+### Authentication with JWT token
+
+Go to [JWT website](https://jwt.io/)
+
+We added a new `login` method to our service layer:
+
+```js
+login (credentials) {
+  return new Promise((resolve, reject) => {
+    axios.post(`/services/auth.php`, credentials)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(response => {
+        reject(response.status)
+      })
+  })
+}
+```
+
 ---
 
 ## References

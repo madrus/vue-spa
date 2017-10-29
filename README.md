@@ -484,6 +484,10 @@ login (credentials) {
 }
 ```
 
+> Token expiration date is set inside the token itself but in this course, the expiration date is returned for simplicity to avoid token decryption.
+
+We can test our new login form using `bill/vuejs` as username and password.
+
 ---
 
 ## References

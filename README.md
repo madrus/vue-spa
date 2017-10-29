@@ -326,7 +326,7 @@ The three types of bahavior are:
 __Scroll to the top of the screen__
 
 ```js
-scrollBehavior: (to, from, savedPosition) => ({ y: 0 }),
+scrollBehavior: (to, from, savedPosition) => ({ x: 0, y: 0 }),
 ```
 
 __Scroll to the last saved position__
@@ -348,6 +348,43 @@ scrollBehavior: (to, from, savedPosition) => ({
       selector: to.hash
   }
 }),
+```
+
+---
+
+### Route Parameters
+
+- set route parameters in `router.js`
+- make sure they match `router-link` tags
+- in `Category.vue` add a watcher and make sure the component is refreshed if the route changes:
+  - create `loadPosts` method
+  - call it in `Created` hook
+  - call it again in the watcher if the route changes
+
+```js
+data () {
+  return {
+    id: this.$route.params.id,
+    ...
+},
+methods: {
+  loadPosts () {
+    if (this.id === 'front-end') {
+      this.posts = this.postsFrontEnd
+    } else {
+      this.posts = this.postsMobile
+    }
+  }
+},
+watch: {
+  '$route' (to, from) {
+    this.id = to.params.id
+    this.loadPosts()
+  }
+},
+created () {
+  this.loadPosts()
+}
 ```
 
 ---

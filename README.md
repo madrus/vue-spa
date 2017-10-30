@@ -54,7 +54,7 @@ Axios
 
 ---
 
-## Notes
+## Environment Setup
 
 ### path
 
@@ -278,7 +278,9 @@ Of course, we also need to add the generated stylesheet to the `index.html`:
 
 ---
 
-### Routing
+## Routing
+
+### vue-router
 
 Start by installing `vue-router` plugin into the project (see above).
 Then create the new `router.js` file and link the Category component
@@ -459,6 +461,8 @@ that the JavaScript file being loaded is now broken in three chunks:
 
 ---
 
+## API Communication
+
 ### Add Service Layer
 
 Using Axios we can read posts from an API.
@@ -467,6 +471,8 @@ Using Axios we can read posts from an API.
 - use the new `getPosts` service method in the `loadPosts` method of `Categories.js` to read posts instead hardcoding them.
 - refactor the template to use the field names from the actual response
 - sanitize the serialized HTML with `v-html` directive
+
+---
 
 ### Authentication with JWT token
 
@@ -508,6 +514,21 @@ axios.interceptors.request.use(config => {
   return config
 })
 ```
+
+---
+
+## State Management
+
+### Naive approach via event-bus
+
+In different components, we want to know if the user is authenticated.
+We can use an __Event Bus__ to notify about state changes.
+Then we can show `Logout` menu option if the user is authenticated, and `Login` otherwise.
+Unfortunately, this does not help us if we browse to the category menu options.
+And we don't want to repeat the same code in every component that is interested
+in this event.
+
+We better use __State Management__.
 
 ---
 

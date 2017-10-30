@@ -75,7 +75,7 @@ path.resolve(__dirname, `./index.html`)
 The `[name]` in `webpack.base.config.js` inside `output` will be substituted with `app` inside `entry`.
 
 ```js
-const config ={
+const config = {
   entry: {
     app: path.resolve(__dirname, '../src/client-entry.js')
   },
@@ -543,6 +543,42 @@ We better use __State Management__.
 - add `isAuthenticated` to the store
 - import `store` in `app.js`, and add it to exports
 - run the application and see the variable in `Vuex` section of the __Vue.js Dev Tools__
+- click on `Components` and notice the exact name of the `$vm` variable like `$vm0` on the picture:
+
+  ![$vm](./images/$vm0.png)
+
+- in console, type `$vm0.$store.state` to the value of the `isAuthenticated` value
+
+### Getters
+
+__Getters__ are like computed properties of the Vuex Store.
+
+We added a getter for the `isAuthenticated` property in `store/index.js`:
+
+```js
+getters: {
+  isAuthenticated (state) {
+    // if necessary, include here extra logic
+    return state.isAuthenticated
+  }
+}
+```
+
+Now, we can rewrite the script in the `AppHeader.vue`:
+
+```js
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters([`isAuthenticated`])
+  }
+}
+</script>
+```
+
+---
 
 ## References
 

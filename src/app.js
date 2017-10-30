@@ -1,5 +1,6 @@
 // jshint esversion:6,-W033
 import Vue from 'vue'
+import store from './store/index'
 import AppLayout from './theme/Layout.vue'
 import router from './router'
 
@@ -7,9 +8,10 @@ import router from './router'
 
 const app = new Vue({
   router,
+  store,
   // jshint ignore:start
   ...AppLayout
   // jshint ignore:end
 })
 
-export { app, router }
+export { app, router, store }

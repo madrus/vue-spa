@@ -52,6 +52,10 @@ Axios
 
 - `yarn add axios`
 
+Vuex
+
+- `yarn add vuex`
+
 ---
 
 ## Environment Setup
@@ -531,6 +535,14 @@ in this event.
 We better use __State Management__.
 
 ---
+
+### Vuex Store
+
+- install `vuex` (see above)
+- create `src/store/index.js` file
+- add `isAuthenticated` to the store
+- import `store` in `app.js`, and add it to exports
+- run the application and see the variable in `Vuex` section of the __Vue.js Dev Tools__
 
 ## References
 

@@ -628,6 +628,44 @@ if (typeof window !== 'undefined') {
 }
 ```
 
+### Modules
+
+We can further split the store to make everything more manageable,
+e.g. separate everything related to posts in a separate `posts.js` module.
+We can further wrap everything in a virtual namespace by using the `namespaced` property:
+
+```js
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
+}
+```
+
+We add `postsModule` to the store:
+
+```js
+import postsModule from './posts'
+
+const store = new Vuex.Store({
+  modules: {
+    postsModule
+  },
+  state,
+  ...
+}
+```
+
+Then in `Category.vue`, we can use the getters from this module by specifying its name as the first parameter:
+
+```js
+computed: {
+  ...mapGetters('postsModule', ['posts'])
+},
+```
+
 ---
 
 ## References

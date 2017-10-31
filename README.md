@@ -666,6 +666,20 @@ computed: {
 },
 ```
 
+Here is how a namespaced action is being dispatched:
+
+```js
+methods: {
+  loadPosts () {
+    let categoryId = 2 // front-end links
+    if (this.$route.params.id === 'mobile') {
+      categoryId = 11 // mobile links
+    }
+    this.$store.dispatch('postsModule/updateCategory', categoryId)
+  }
+},
+```
+
 ---
 
 ## References

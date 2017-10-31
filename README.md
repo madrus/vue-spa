@@ -682,6 +682,14 @@ methods: {
 
 ---
 
+## Server Side Rendering
+
+For this we start by creating `server-entry.js` and `webpack.server.config.js`.
+
+
+
+---
+
 ## References
 
 - [EditorConfig website](http://editorconfig.org/)

@@ -15,6 +15,20 @@ const store = new Vuex.Store({
       // if necessary, include here extra logic
       return state.isAuthenticated
     }
+  },
+  actions: {
+    logout (context) {
+      context.commit('logout')
+    }
+  },
+  mutations: {
+    logout (state) {
+      if (typeof Storage !== 'undefined') {
+        window.localStorage.setItem('token', null)
+        window.localStorage.setItem('tokenExpiration', null)
+      }
+      state.isAuthenticated = false
+    }
   }
 })
 

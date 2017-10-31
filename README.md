@@ -578,6 +578,11 @@ export default {
 </script>
 ```
 
+### Actions and Mutations
+
+The 'logout' __action__ will commit the 'logout' __command__. The commit of a command
+will trigger the 'logout' __mutation__ that will eventually __update the state__.
+
 ---
 
 ## References

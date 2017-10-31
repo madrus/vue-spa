@@ -583,6 +583,51 @@ export default {
 The 'logout' __action__ will commit the 'logout' __command__. The commit of a command
 will trigger the 'logout' __mutation__ that will eventually __update the state__.
 
+We can now rewrite the `logout` method in `Login.vue` to use the `logout` action from the store.
+
+```js
+import { mapGetters, mapActions } from 'vuex'
+
+export default {
+  ...
+  methods: {
+    ...mapGetters({
+      logout: 'logout'
+    }),
+    ...
+  },
+  ...
+}
+```
+
+Calling this method will make __Vuex__ trigger the following method:
+
+```js
+logout () {
+  this.$store.dispatch('logout')
+}
+```
+
+This method in turn will trigger the `logout` action from the store.
+
+We will also rewrite the `login` method to use its own action and mutation.
+The extra trick here is to replace the `created` method in the `Login.vue` component
+with attaching a DOM-listener waiting for the `document` to be loaded.
+This listener will then check the expiration date of the token in the store,
+and, if all is ok, set the value of `isAuthenticated` store variable to `true`.
+
+```js
+if (typeof window !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', (event) => {
+    let expiration = window.localStorage.getItem('tokenExpiration')
+    var unixTimestamp = new Date().getTime() / 1000
+    if (expiration && parseInt(expiration) - unixTimestamp > 0) {
+      store.state.isAuthenticated = true
+    }
+  })
+}
+```
+
 ---
 
 ## References

@@ -1,13 +1,13 @@
 // jshint esversion:6,-W033
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Category from './theme/Category.vue'
-// import Login from './theme/Login.vue'
-// import NotFound from './theme/NotFound.vue'
+import Category from './theme/Category.vue'
+import Login from './theme/Login.vue'
+import NotFound from './theme/NotFound.vue'
 
-const Category = () => System.import('./theme/Category.vue')
-const Login = () => System.import('./theme/Login.vue')
-const NotFound = () => System.import('./theme/NotFound.vue')
+// const Category = () => System.import('./theme/Category.vue')
+// const Login = () => System.import('./theme/Login.vue')
+// const NotFound = () => System.import('./theme/NotFound.vue')
 
 Vue.use(VueRouter)
 

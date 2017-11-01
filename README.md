@@ -726,6 +726,37 @@ Until now, we are still serving a static `index.html` page. But we want to serve
 
 If we run the server, we notice that the page is loaded immediately but [in the beginning] there is no content on the page. This is because some of the methods like `loadPosts` have not run yet. That is because `created` method runs __after__ the component is attached to the document. The header and footer are not being rendered, the load asynchronously and appear immediately.
 
+### Server Side Route Handling
+
+We added server side route handling in the `server-entry.js`. The trainer suggested to add `onReady` callback to the `client-entry.js` as well because his page still would not render:
+
+```js
+import { app, router } from './app'
+
+router.onReady(() => {
+  app.$mount('#app')
+})
+```
+
+Yet, in my case this would lead to the following error in the console when I click on different menu options:
+
+```none
+(node:11716) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): ReferenceError: window is not defined
+(node:11716) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+```
+
+Therefore, I have returned back to the initial code:
+
+```js
+import { app } from './app'
+
+app.$mount('#app')
+```
+
+I can still see __a small glitch__:
+
+If I start clicking around the menu items in this order: `Login`, `Front-end`, `Mobile`, etc., every time I click `Front-end` I see the content flash with the `Mobile` page content and after that immediately switch to the right content for the `Front-end` menu option. This does not happen however for the content of the `Mobile` page itself.
+
 ---
 
 ## References

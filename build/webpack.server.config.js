@@ -1,6 +1,6 @@
 // jshint esversion:6,-W033
 const path = require('path')
-const webpack = require('webpack')
+// const webpack = require('webpack') // not used in this module
 const base = require('./webpack.base.config')
 const nodeExternals = require('webpack-node-externals')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')

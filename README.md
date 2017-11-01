@@ -56,6 +56,11 @@ Vuex
 
 - `yarn add vuex`
 
+Server-side rendering
+
+- `yarn add vue-server-renderer`
+- `yarn add webpack-node-externals -D`
+
 ---
 
 ## Environment Setup
@@ -684,9 +689,37 @@ methods: {
 
 ## Server Side Rendering
 
+### Memory File System
+
 For this we start by creating `server-entry.js` and `webpack.server.config.js`.
 
+The "magic" begins in the `dev-server.js`.
 
+- Next to the client configuration, we add the above-mentioned server configuration.
+- We also include and instantiate the MFS (Memory File System) module.
+- We set the __output path file system__ of our server-entry to the __memory file system__ we initialized.
+
+> This is done only in __development mode__. So, we don't actually create the files in our file system but compile everything in memory. Later on, when we want actually to deploy our application, we will create these files optimized in our file system. For now, we keep things fast while in development.
+
+- Additionally, we grab the output path of our server configuration
+- We create a watch handler to trigger an event every time our source code changes. Every time it changes, webpack will compile a new bundle and will read the new bundle file that is created from our memory file system.
+- For now, we include in our server a callback and name it `onUpdate`.
+- We run this callback when the server bundle is updated, passing in the new server bundle.
+
+### Vue Server Renderer
+
+- We install the `vue-server-renderer` that has been created by the Vue.js team, which contains the `createBundleRenderer` method.
+- This methods receives the server bundle, which is basically our Vue.js application, and generates a renderer.
+- This renderer will then receive the url that we are at, and will generate the final html.
+- We also included the variable called `renderer`, and in the dev-server we pass it in the `onUpdate` callback.
+- Every time the server bundle changes, we will receive a new bundle, and generate a new renderer.
+
+Until now, we are still serving a static `index.html` page. But we want to server the end result rendered by the server.
+
+- When we receive a request, we will now run `renderer.renderToString` method and pass in the url.
+- As a callback we will receive an error or the final html.
+- If we get an error, we return the 500 server error code back to the user
+- If all is ok, we embed the html result to our `index.html` page
 
 ---
 

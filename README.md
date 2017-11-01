@@ -720,6 +720,11 @@ Until now, we are still serving a static `index.html` page. But we want to serve
 - As a callback we will receive an error or the final html.
 - If we get an error, we return the 500 server error code back to the user
 - If all is ok, we embed the html result to our `index.html` page
+- in the `index.html` file, replace `<div id="app"></div>` with moustaches: `{{ APP }}`
+- we add the id of `app` in the `Layout.vue` component, so that after the site loads, Vue.js will be mounted in this area
+- in the `server.js`, we can now load our `index.html` and replace the `{{ APP }}` with our generated code, and return the end result.
+
+If we run the server, we notice that the page is loaded immediately but [in the beginning] there is no content on the page. This is because some of the methods like `loadPosts` have not run yet. That is because `created` method runs __after__ the component is attached to the document. The header and footer are not being rendered, the load asynchronously and appear immediately.
 
 ---
 

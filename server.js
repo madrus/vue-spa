@@ -24,8 +24,9 @@ app.get('*', (req, res) => {
       console.log(err) // temp: don't use in production!
       return res.status(500).send('Server Error')
     }
-    console.log(html)
-    res.write(indexHTML)
+    // console.log(html)
+    html = indexHTML.replace('{{ APP }}', html)
+    res.write(html)
     res.end()
   })
 })

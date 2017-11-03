@@ -60,6 +60,7 @@ Server-side rendering
 
 - `yarn add vue-server-renderer`
 - `yarn add webpack-node-externals -D`
+- `yarn add serialize-javascript`
 
 ---
 
@@ -719,7 +720,7 @@ Until now, we are still serving a static `index.html` page. But we want to serve
 - When we receive a request, we will now run `renderer.renderToString` method and pass in the url.
 - As a callback we will receive an error or the final html.
 - If we get an error, we return the 500 server error code back to the user
-- If all is ok, we embed the html result to our `index.html` page
+- If all is ok, we embed th]e html result to our `index.html` page
 - in the `index.html` file, replace `<div id="app"></div>` with moustaches: `{{ APP }}`
 - we add the id of `app` in the `Layout.vue` component, so that after the site loads, Vue.js will be mounted in this area
 - in the `server.js`, we can now load our `index.html` and replace the `{{ APP }}` with our generated code, and return the end result.
@@ -738,24 +739,29 @@ router.onReady(() => {
 })
 ```
 
-Yet, in my case this would lead to the following error in the console when I click on different menu options:
+In the console, I am getting `window is not defined` error:
 
 ```none
-(node:11716) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 1): ReferenceError: window is not defined
-(node:11716) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+(node:25243) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
+warning.js:18
 ```
 
-Therefore, I have returned back to the initial code:
+After some research, debugging and comparing my code with the code in the trainer's repository, I have found out I am
+missing extra check in `app.service.js`:
 
 ```js
-import { app } from './app'
-
-app.$mount('#app')
+axios.interceptors.request.use(config => {
+  // neccessary to catch the "unhandled promise rejection"
+  if (typeof window === 'undefined') {
+    return config
+  }
+  ...
+})
 ```
 
 I can still see __a small glitch__:
 
-If I start clicking around the menu items in this order: `Login`, `Front-end`, `Mobile`, etc., every time I click `Front-end` I see the content flash with the `Mobile` page content and after that immediately switch to the right content for the `Front-end` menu option. This does not happen however for the content of the `Mobile` page itself.
+If I start clicking in the menu items between: `Login` and one of the other two menu options `Front-end` or `Mobile`, etc., every time I click `Front-end` I see the content flash with the `Mobile` page content and after that immediately switch to the right content for the `Front-end` menu option. Same happens if I click on `Mobile`, only this time I see the content of the `Front-end` flashing for a short moment. But not when I switch back and forth between `Front-end` and `Mobile`.
 
 ---
 

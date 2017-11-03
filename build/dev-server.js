@@ -10,11 +10,14 @@ module.exports = function setupDevServer (app, onUpdate) {
     'webpack-hot-middleware/client',
     clientConfig.entry.app
   ]
+
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   )
+
   const clientCompiler = webpack(clientConfig)
+
   app.use(
     require('webpack-dev-middleware')(clientCompiler, {
       stats: {
@@ -22,6 +25,7 @@ module.exports = function setupDevServer (app, onUpdate) {
       }
     })
   )
+
   app.use(require('webpack-hot-middleware')(clientCompiler))
 
   const serverCompiler = webpack(serverConfig)

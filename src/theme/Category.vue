@@ -12,8 +12,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import Post from './Post.vue'
+const fetchInitialData = (store, route) => {
+  let categoryId = 2 // front-end links
+  if (route.params.id === 'mobile') {
+    categoryId = 11 // mobile links
+  }
+  store.dispatch('postsModule/updateCategory', categoryId)
+}
 
 export default {
+  asyncData (store, route) {
+    return fetchInitialData(store, route)
+  },
   components: {
     'app-post': Post
   },
@@ -22,11 +32,7 @@ export default {
   },
   methods: {
     loadPosts () {
-      let categoryId = 2 // front-end links
-      if (this.$route.params.id === 'mobile') {
-        categoryId = 11 // mobile links
-      }
-      this.$store.dispatch('postsModule/updateCategory', categoryId)
+      fetchInitialData(this.$store, this.$route)
     }
   },
   watch: {

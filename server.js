@@ -1,5 +1,6 @@
 // jshint esversion:6,-W033
 const express = require('express')
+const serialize = require('serialize-javascript')
 const app = express()
 const fs = require('fs')
 const path = require('path')
@@ -19,13 +20,15 @@ require('./build/dev-server')(app, bundle => {
 })
 
 app.get('*', (req, res) => {
-  renderer.renderToString({ url: req.url }, (err, html) => {
+  const context = { url: req.url }
+  renderer.renderToString(context, (err, html) => {
     if (err) {
-      console.log(err) // temp: don't use in production!
       return res.status(500).send('Server Error')
     }
     // console.log(html)
     html = indexHTML.replace('{{ APP }}', html)
+    html = html.replace('{{ STATE }}',
+      `<script>window.__INITIAL_STATE__=${serialize(context.initialState, { isJSON: true })}</script>`)
     res.write(html)
     res.end()
   })

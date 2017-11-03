@@ -4,6 +4,10 @@ import axios from 'axios'
 axios.defaults.baseURL = 'https://api.fullstackweekly.com'
 
 axios.interceptors.request.use(config => {
+  // neccessary to catch the "unhandled promise rejection"
+  if (typeof window === 'undefined') {
+    return config
+  }
   const token = window.localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -24,11 +28,11 @@ const appService = {
     return new Promise((resolve, reject) => {
       axios.post('/services/auth.php', credentials)
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           resolve(response.data)
         })
         .catch(response => {
-          console.log(response.status)
+          // console.log(response.status)
           reject(response.status)
         })
     })

@@ -1,4 +1,6 @@
 // jshint esversion:6,-W033
-import { app } from './app'
+import { app, router } from './app'
 
-app.$mount('#app')
+router.onReady(() => {
+  app.$mount('#app')
+})

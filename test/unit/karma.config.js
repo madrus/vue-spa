@@ -8,6 +8,11 @@ module.exports = function (config) {
     preprocessors: {
       './index.js': ['webpack']
     },
+    client: {
+      mocha: {
+        timeout: 6000 // 6 seconds - upped from 2 seconds
+      }
+    },
     plugins: [
       'karma-mocha',
       'karma-sinon-chai',

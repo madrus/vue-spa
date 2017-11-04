@@ -20,7 +20,7 @@ describe('Post.vue', () => {
       .to.equal('http://www.pluralsight.com')
   })
 
-  it('should update element\'s href when property link changes', (done) => {
+  it('should update element\'s href when property link changes', done => {
     const comp = createComponent()
     expect(comp.$el.querySelector('.card-footer-item').getAttribute('href'))
       .to.equal('http://www.pluralsight.com')

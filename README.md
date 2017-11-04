@@ -818,7 +818,7 @@ In our second test, we are using asychronous `nextTick()` method. If we now chan
 > Mocha has a special callback method called `done` that can be used to stop the main thread and wait till the asynchronous part is completed. `done` can be given as a callback parameter, which is called last inside the asynchronous method.
 
 ```js
-it('should update element\'s href when property link changes', (done) => {
+it('should update element\'s href when property link changes', done => {
   ...
   Vue.nextTick(() => {
     expect(comp.$el.querySelector('.card-footer-item').getAttribute('href'))
@@ -826,6 +826,48 @@ it('should update element\'s href when property link changes', (done) => {
     done()
   })
 })
+```
+
+### Category.spec.js
+
+To test `Category.vue` we will apply a different approach from that for `Post.vue`. Instead of extending the Vue constructor with `Category` component, and then initializing it, we will initialize the base `Vue` constructor and then load the component. Remember that the `Category` component uses the router heavily as a dependency. So, we will
+
+- load the `Category` component through the router
+- include `vue`, `vue-router`, and the `Category` component
+- extend `Vue` with `VueRouter` plugin
+- set the new `VueRouter` instance with the default route returning the `Category` component
+- include the `router` configuration in the `Vue` configuration
+- now, the Vue will be just a `div` when it is initalized:
+
+  ```html
+  <div><router-view></router-view></div>
+  ```
+
+- render the view in this `div`, and that view will be the `Category` component rendered by the `router`
+
+In this way, we have both initialized the `router` and have included the `Category` component. What we are still missing is the `action` `dispatched` to fetch the `posts`.
+
+
+#### Timeout issue
+
+I got stuck at the end of the __Testing with Router and State__ video. First, I thought I had done something wrong, but then I decided to build the official code from chapter 08 and to see if it made any difference. It did not. In both cases, running the tests in my project or running the tests from your github project, produced the same error: `timeout of 2000ms exceeded, for async tests and hooks, ensure that "done()" is called; if returning a Promise, ensure it resolves`.
+
+![timeout_error](./images/timeout_error.jpg)
+
+Also, I have tried to add `console.log()` to the callback function of the `store.watch()` method but it printed nothing. Therefore, it never got triggered. So, the watcher actually never saw any changes in the store.
+
+If the call to the API takes longer the 2000 ms, the test fails as above in any case. I have found that it is possible, albeit not recommended, to override the default Mocha timeout of 2000 ms. I have tried that with 6000 ms, and the test succeeded after some 4000+ ms. The link to the blog is here: [Overriding karma-mocha default timeout of 2000ms](https://blog.jonathanargentiero.com/overriding-karma-mocha-default-timeout-2000ms/)
+
+This also makes it clear why we need to use __stubs__ or __mocks__ for this sort of long running transactions.
+
+Here is the code snippet I have added to `karma.config.js`:
+
+```js
+client: {
+  mocha: {
+    timeout: 6000 // 6 seconds - upped from 2 seconds
+  }
+},
 ```
 
 ---

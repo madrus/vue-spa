@@ -62,6 +62,12 @@ Server-side rendering
 - `yarn add webpack-node-externals -D`
 - `yarn add serialize-javascript`
 
+Testing
+
+- `yarn add chai cross-env karma mocha karma-mocha -D`
+- `yarn add karma-phantomjs-launcher karma-webpack -D`
+- `yarn add karma-sinon-chai sinon sinon-chai -D`
+
 ---
 
 ## Environment Setup
@@ -765,8 +771,47 @@ If I start clicking in the menu items between: `Login` and one of the other two 
 
 ---
 
+## Testing
+
+### Setup
+
+We will be using the following tools and frameworks:
+
+- Karma = the test runner
+- Mocha = the language to write tests
+- Chai = the assertion framework
+- Sinon = to write mocks
+
+Alternatively, we could use one of the following frameworks, which have everything necessary inside:
+
+- Jasmine
+- Jest
+- AVA
+
+We will also use
+
+- Phantomjs = headless browser
+
+Install the necessary dev dependencies found above and configure Karma. Now we can start writing tests.
+
+### Post.spec.js
+
+Our `Post` component gets `link` prop from its parent, `Category`. Then it loads `title` and `content` into slots and the `link` in the `<footer>` tag.
+
+First test will check if this link is generated correctly. For that, we:
+
+- extend `Vue` component with `Post`
+- give it the link to PluraSight webstie as `propsData`
+
+---
+
 ## References
 
+- [Code Snippets](https://gist.github.com/bstavroulakis/dcaf903e3f8d3bf6e6fa202b34c3849a)
 - [EditorConfig website](http://editorconfig.org/)
+- in `package.json` we replace the default `test` command with that for `karma` run with `--single-run` property
+- we add `.eslintrc` to avoid warnings about unreferenced globals like `describe`, `it`, and `assert`
+
+> Usually you use `--single-run` property only on the server for smoke test. All the tests will run once and stop. In development, we may want to omit this command. Then the tests will be run each time the code changes.
 
 ---

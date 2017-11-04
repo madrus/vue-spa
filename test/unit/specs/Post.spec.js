@@ -3,7 +3,7 @@ import Vue from 'vue'
 import Post from '../../../src/theme/Post.vue'
 
 describe('Post.vue', () => {
-  it('should render the link', () => {
+  const createComponent = () => {
     const PostConstructor = Vue.extend(Post)
     const comp = new PostConstructor({
       propsData: {
@@ -11,7 +11,24 @@ describe('Post.vue', () => {
       }
     }).$mount()
     // console.log(comp)
+    return comp
+  }
+
+  it('should render the link', () => {
+    const comp = createComponent()
     expect(comp.$el.querySelector('.card-footer-item').getAttribute('href'))
       .to.equal('http://www.pluralsight.com')
+  })
+
+  it('should update element\'s href when property link changes', (done) => {
+    const comp = createComponent()
+    expect(comp.$el.querySelector('.card-footer-item').getAttribute('href'))
+      .to.equal('http://www.pluralsight.com')
+    comp.link = 'https://www.finadmin4u.nl'
+    Vue.nextTick(() => {
+      expect(comp.$el.querySelector('.card-footer-item').getAttribute('href'))
+        .to.equal('https://www.finadmin4u.nl')
+      done()
+    })
   })
 })

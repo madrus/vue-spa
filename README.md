@@ -798,10 +798,35 @@ Install the necessary dev dependencies found above and configure Karma. Now we c
 
 Our `Post` component gets `link` prop from its parent, `Category`. Then it loads `title` and `content` into slots and the `link` in the `<footer>` tag.
 
-First test will check if this link is generated correctly. For that, we:
+__The first test__ will check if this link is generated correctly. For that, we:
 
 - extend `Vue` component with `Post`
 - give it the link to PluraSight webstie as `propsData`
+- in `package.json` we replace the default `test` command with that for `karma` run with `--single-run` property
+- we add `.eslintrc` to avoid warnings about unreferenced globals like `describe`, `it`, and `assert`
+
+> Usually you use `--single-run` property only for the smoke test on the server. All the tests will run once and stop. In development, we may want to omit this command. Then the tests will be run each time the code changes.
+
+__The second test__ will check if the change in the property `link` value results in the corresponding change in the DOM.
+
+> Here we will need to use `Vue.nextTick()` callback method to wait till the DOM has rendered the result. Therefore giving our change a chance to be reflected in the DOM. Otherwise, the test will fail.
+
+### 'done' callback
+
+In our second test, we are using asychronous `nextTick()` method. If we now change the asserted link value expecting our method to fail, we will notice that the assertion fails but the test is successful. This happens because of the one-threaded nature of JavaScript. The test runner does not get a signal that the asynchronous test fails.
+
+> Mocha has a special callback method called `done` that can be used to stop the main thread and wait till the asynchronous part is completed. `done` can be given as a callback parameter, which is called last inside the asynchronous method.
+
+```js
+it('should update element\'s href when property link changes', (done) => {
+  ...
+  Vue.nextTick(() => {
+    expect(comp.$el.querySelector('.card-footer-item').getAttribute('href'))
+      .to.equal('https://www.finadmin4u.nl')
+    done()
+  })
+})
+```
 
 ---
 
@@ -809,9 +834,5 @@ First test will check if this link is generated correctly. For that, we:
 
 - [Code Snippets](https://gist.github.com/bstavroulakis/dcaf903e3f8d3bf6e6fa202b34c3849a)
 - [EditorConfig website](http://editorconfig.org/)
-- in `package.json` we replace the default `test` command with that for `karma` run with `--single-run` property
-- we add `.eslintrc` to avoid warnings about unreferenced globals like `describe`, `it`, and `assert`
-
-> Usually you use `--single-run` property only on the server for smoke test. All the tests will run once and stop. In development, we may want to omit this command. Then the tests will be run each time the code changes.
 
 ---

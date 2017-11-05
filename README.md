@@ -870,6 +870,59 @@ client: {
 },
 ```
 
+The trainer says that when we test our components we don't want to depend on the Ajax call as they slow down our unit tests. We could create a new `store` object that would have an `updateCategory` action that would update the `posts` array with some static data.
+
+```js
+store {
+  updateCategory: () => {
+    return []
+  }
+}
+```
+
+## Build for Production
+
+In the `package.json` file, we add scripts that will generate and minify the html, javascript, and css on disk:
+
+```json
+scripts: {
+  ...
+  "build:client": "cross-env NODE_ENV=production webpack --config ./build/webpack.client.config.js --progress --hide-modules",
+  "build:server": "cross-env NODE_ENV=production webpack --config ./build/webpack.server.config.js --progress --hide-modules",
+  "build": "rimraf ./dist && npm run build:client && npm run build:server",
+  "start:prod": "cross-env NODE_ENV=production npm run start",
+  "start:dev": "rimraf ./dist && cross-env NODE_ENV=development npm run start"
+}
+```
+
+> `NODE_ENV` is an environment variable we pass inside the script to indicate the target environment
+>
+> `--progress --hide-modules` keys are used to decrease the size of the info in the console
+>
+> `rimraf` is a Node.js component to delete all files in the destination folder
+
+### build:client
+
+`build:client` script uses `webpack` to put most of the client side artifacts in one single `dist/assets/js/app.js` file and compiles all css to one minified `dist/assets/css/styles.css` file.
+
+### build:server
+
+`build:server` script uses `webpack` to put all the server side artifacts in one single `dist/server/main.js` file.
+
+### build
+
+`build` script cleans the `dist` folder and then builds both the client and the server.
+
+### start:prod
+
+`start:prod` script will run the pre-compiled `main.js`. We need to change the `server.js` file for that, so that this happens if the `NODE_ENV` variable has the value of `production`. Also, as we are serving static files, we will use the `dist` folder as our root path. The website will be loading as before but from our static files and not from mememory.
+
+> Before we can run this script, we must be sure that the packages are pre-compiled and present in the `dist` folder.
+
+### start:dev
+
+`start:dev` script runs everything from memory as before using the `webpack dev-server`. Therefore, we can let it delete the `dist` folder first to make sure we are not loading pre-compiled stuff.
+
 ---
 
 ## References

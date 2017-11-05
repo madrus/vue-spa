@@ -1,3 +1,7 @@
-node_modules/
+# folders to ignore
+node_modules
+dist
+
+# files to ignore
 yarn.lock
 package-lock.json

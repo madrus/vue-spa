@@ -880,6 +880,8 @@ store {
 }
 ```
 
+TODO: add a mock for posts
+
 ## Build for Production
 
 In the `package.json` file, we add scripts that will generate and minify the html, javascript, and css on disk:
@@ -923,11 +925,96 @@ scripts: {
 
 `start:dev` script runs everything from memory as before using the `webpack dev-server`. Therefore, we can let it delete the `dist` folder first to make sure we are not loading pre-compiled stuff.
 
+## Optimize for Production
+
+### UglifyJsPlugin
+
+We don't need to optimize the code we run on the server side, but we should do it for the client side as it will go over the line. So, in `webpack.client.config.js` we will use the webpack's `UglifyJsPlugin` to do that. Running the build script we can see that the size of the final client script has become much smaller than that of the server.
+
+### Other plugins
+
+> We could also include other plugins like `postCSS` that removes all CSS not used in our application.
+
+TODO: add postCSS plugin
+
+### Chunks
+
+Using this technique we will split the package to be loaded in several files.
+
+In our `webpack.base.config.js`, we will include one new entry called `vendor` to include all third-party JavaScript code that our application uses:
+
+```js
+entry: {
+  ...
+  vendor: ['vue', 'vue-router', 'vuex', 'axios']
+},
+```
+
+In our `webpack.client.config.js`, we will add the `CommonsChunkPlugin` and configure it to use `vendor` entry to put all the vendor components is a separate file inside `assets/js` folder.
+
+```js
+const config = Object.assign({}, base, {
+  plugins: (base.plugins || []).concat([
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'assets/js/[name].js'
+    })
+  ])
+})
+```
+
+Finally, we need to include this new `vendor.js` in our `index.html` file __before__ `app.js`:
+
+```html
+<script src="/assets/js/vendor.js"></script>
+```
+
+> This may give us two advantages:
+>
+>- we set a large cached header with vendor stuff, which will change very rarely
+>- we can take advantage of the __HTTP/2__ parallel loading to load our scripts faster
+
+### NODE_ENV webpack variable
+
+One last optimization is to define `NODE_ENV` in a webpack plugin to `production`. Our libraries will read this parameter and optimize the compilation script for production purposes. To do this, we will include the production environment variable in our client and in our server script as well.
+
+TODO: ask Bill about the server script as he did not do that in the course
+
+We will also include the webpack's `DefinePlugin` to indicate a production environment, so that warning blocks can be automatically dropped by `UglifyJS` during minification.
+
+In `webpack.client.config.js`:
+
+```js
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    ...
+  )
+}
+```
+
+More information can be found on the [Deployment to Production](https://vuejs.org/v2/guide/deployment.html) page.
+
+---
+
+## Side Notes
+
+To show all invisible files in the current directory use this version of `ls` command:
+
+```bash
+ls -ld .?*
+```
+
 ---
 
 ## References
 
 - [Code Snippets](https://gist.github.com/bstavroulakis/dcaf903e3f8d3bf6e6fa202b34c3849a)
 - [EditorConfig website](http://editorconfig.org/)
+- [Deployment to Production](https://vuejs.org/v2/guide/deployment.html)
 
 ---

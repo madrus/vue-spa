@@ -767,9 +767,31 @@ axios.interceptors.request.use(config => {
 })
 ```
 
+### A small glitch
+
 I can still see __a small glitch__:
 
 If I start clicking in the menu items between: `Login` and one of the other two menu options `Front-end` or `Mobile`, etc., every time I click `Front-end` I see the content flash with the `Mobile` page content and after that immediately switch to the right content for the `Front-end` menu option. Same happens if I click on `Mobile`, only this time I see the content of the `Front-end` flashing for a short moment. But not when I switch back and forth between `Front-end` and `Mobile`.
+
+Here is the answer of Bill Stavroulakis:
+
+> I'm glad you noticed that! I also noticed that while creating the course but I didn't want to add more code or videos for UX optimizations as it would distract from the main content. But this could be an excellent first optimization for our application.
+>
+> The problem is that when you load the mobile links, the front-end links are already in the store. So our page loads the category component and shows the front-end links from the store. But then our watcher in Category.vue triggers the "loadPosts" method, that makes a fresh Ajax request and updates the store with the new values. This is why we see the old content and afterwards the new content is refreshed after a second or so.
+>
+> To fix this we could maybe empty the posts every time we make a new request. I've created a new branch where I do that => [state-optimization](https://github.com/bstavroulakis/vue-spa/blob/state-optimization/src/vuex/posts.js#L19)
+>
+> So in here I added two checks.
+>
+> 1) If the category that I want to load is the same with the one loaded, don't load the posts again. We can improve some performance like this :)
+> 1) Then if the state exists, reset the posts.
+> 1) I also added a mutation to reset the posts
+
+```js
+if (state && state.categoryId === categoryId) {
+  return
+}
+```
 
 ---
 

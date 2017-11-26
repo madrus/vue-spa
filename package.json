@@ -9,7 +9,7 @@
     "build:server": "cross-env NODE_ENV=production webpack --config ./build/webpack.server.config.js --progress --hide-modules",
     "build": "rimraf ./dist && npm run build:client && npm run build:server",
     "start:prod": "cross-env NODE_ENV=production npm run start",
-    "start:dev": "cross-env NODE_ENV=development npm run start"
+    "start:dev": "rimraf ./dist && cross-env NODE_ENV=development npm run start"
   },
   "keywords": [],
   "author": "",

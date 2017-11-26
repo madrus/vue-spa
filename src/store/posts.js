@@ -17,6 +17,12 @@ const getters = {
 
 const actions = {
   updateCategory (context, categoryId) {
+    if (state && state.categoryId === categoryId) {
+      return
+    }
+    if (state) {
+      context.commit('resetPosts')
+    }
     return appService.getPosts(categoryId)
       .then(data => {
         context.commit('updateCategory', {
@@ -31,6 +37,9 @@ const mutations = {
   updateCategory (state, category) {
     state.categoryId = category.categoryId
     state.posts = category.posts
+  },
+  resetPosts (state) {
+    state.posts = []
   }
 }
 

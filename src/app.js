@@ -1,6 +1,6 @@
 // jshint esversion:6,-W033
 import Vue from 'vue'
-import store from './store/index'
+import store from './store'
 import AppLayout from './theme/Layout.vue'
 import router from './router'
 

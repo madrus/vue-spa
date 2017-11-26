@@ -3,5 +3,5 @@ node_modules
 dist
 
 # files to ignore
-yarn.lock
+yarn*.*
 package-lock.json

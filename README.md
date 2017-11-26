@@ -991,6 +991,7 @@ Finally, we need to include this new `vendor.js` in our `index.html` file __befo
 
 ```html
 <script src="/assets/js/vendor.js"></script>
+<script src="/assets/js/app.js"></script>
 ```
 
 > This may give us two advantages:
@@ -1002,7 +1003,7 @@ Finally, we need to include this new `vendor.js` in our `index.html` file __befo
 
 One last optimization is to define `NODE_ENV` in a webpack plugin to `production`. Our libraries will read this parameter and optimize the compilation script for production purposes. To do this, we will include the production environment variable in our client and in our server script as well.
 
-TODO: ask Bill about the server script as he did not do that in the course
+TODO: ask Bill about the server script as he did that for the client script but not for the server script.
 
 We will also include the webpack's `DefinePlugin` to indicate a production environment, so that warning blocks can be automatically dropped by `UglifyJS` during minification.
 
@@ -1026,6 +1027,42 @@ More information can be found on the [Deployment to Production](https://vuejs.or
 ---
 
 ## Side Notes
+
+### v-cloak
+
+When I added `v-cloak` directly to `#app`, it would not appear in the webpack compiled code:
+
+```html
+<template>
+  <div id="app" v-cloak>
+    ...
+  </div
+</template>>
+```
+
+But when I added an extra `div`, it would:
+
+```html
+<template>
+  <div id="app">
+    <div v-cloak>
+      ...
+    </div>
+  </div
+</template>>
+```
+
+The funny thing is that the compiled code looked something like this:
+
+```html
+  <div id="app" v-cloak>
+    <div>
+      ...
+    </div>
+  </div
+```
+
+### ls tips
 
 To show all invisible files in the current directory use this version of `ls` command:
 
